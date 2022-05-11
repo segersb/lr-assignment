@@ -131,12 +131,12 @@ public class LrAssignment {
 
     static String callContractFunction(Web3j web3j, String contractAddress, Function function) throws IOException {
         String encodedFunction = FunctionEncoder.encode(function);
-        Transaction nameTransaction = Transaction.createEthCallTransaction(contractAddress, contractAddress, encodedFunction);
-        EthCall response = web3j.ethCall(nameTransaction, DefaultBlockParameterName.LATEST).send();
+        Transaction transaction = Transaction.createEthCallTransaction(contractAddress, contractAddress, encodedFunction);
+        EthCall response = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).send();
 
-        List<Type> infoResponseTypes = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
-        if (infoResponseTypes.size() > 0) {
-            return infoResponseTypes.get(0).getValue().toString();
+        List<Type> responseTypes = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
+        if (responseTypes.size() > 0) {
+            return responseTypes.get(0).getValue().toString();
         }
         return "";
     }
